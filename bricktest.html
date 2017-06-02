@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    float: left;
+    position: relative;
+    border:1px solid #d3d3d3;
+    background-image: url("space.jpg");
+}
+p {
+    float: left;
+    position: relative;
+    margin-left: 20px;
+}
+</style>
+</head>
+
+<body onload="startGame()">
+
+
+
+ <p> High Score: <p>
+ <p id = "score"><p>   
+
+<script>
+ // define variables //
+var back = new Image();
+var myGamePiece;
+var ship = new Image();
+var myObstacles = [];
+var fastObstacles = [];
+var backgrounds = [];
+var backgroundsright = [];
+var myScore;
+var missiles = [];
+var myBackground;
+
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function startGame() {
+    myBackground = new component(656, 541, "space.jpg", 0, 0, "background");
+    myGamePiece = new component(30, 30, "output8.png", 240, 500,  "image");
+    myScore = new component("30px", "Consolas", "white", 280, 40, "text");
+    myGameArea.start();
+    makeShip();
+}
+
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = 480;
+        this.canvas.height = 540;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+        
+        },
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    stop : function() {
+        clearInterval(this.interval);
+    },
+}
+
+function makeShip() {
+ctx = myGameArea.context
+        // Draw saucer bottom.
+        ctx.beginPath();
+        ctx.moveTo(28.4, 16.9);
+        ctx.bezierCurveTo(28.4, 19.7, 22.9, 22.0, 16.0, 22.0);
+        ctx.bezierCurveTo(9.1, 22.0, 3.6, 19.7, 3.6, 16.9);
+        ctx.bezierCurveTo(3.6, 14.1, 9.1, 11.8, 16.0, 11.8);
+        ctx.bezierCurveTo(22.9, 11.8, 28.4, 14.1, 28.4, 16.9);
+        ctx.closePath();
+        ctx.fillStyle = "rgb(222, 103, 0)";
+        ctx.fill();
+
+        // Draw saucer top.
+        ctx.beginPath();
+        ctx.moveTo(22.3, 12.0);
+        ctx.bezierCurveTo(22.3, 13.3, 19.4, 14.3, 15.9, 14.3);
+        ctx.bezierCurveTo(12.4, 14.3, 9.6, 13.3, 9.6, 12.0);
+        ctx.bezierCurveTo(9.6, 10.8, 12.4, 9.7, 15.9, 9.7);
+        ctx.bezierCurveTo(19.4, 9.7, 22.3, 10.8, 22.3, 12.0);
+        ctx.closePath();
+        ctx.fillStyle = "rgb(51, 190, 0)";
+        ctx.fill();
+        // Save ship data.
+        ship = document.createElement("canvas");
+        ship.width = ship.height = 30;
+        var shipCtx = ship.getContext("2d");
+        shipCtx.drawImage(ctx.canvas,  0, 0);
+    }
+
+function component(width, height, color, x, y, type) {
+    this.type  = type;
+    if (type == "image" || type == "background") {
+    this.image = new Image();
+    this.image.src = color;
+  }
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;    
+    this.x = x;
+    this.y = y;    
+    this.update = function() {
+        ctx = myGameArea.context;
+        if (this.type == "text") {
+      ctx.font = this.width + " " + this.height;
+      ctx.fillStyle = color;
+      ctx.fillText(this.text, this.x, this.y);
+    } if (type == "image" || type == "background") {
+      ctx.drawImage(this.image, 
+        this.x, 
+        this.y,
+        this.width, this.height);
+      if (type == "background") {
+        ctx.drawImage(this.image, this.x,
+        this.y - this.height,
+        this.width, this.height);
+      }
+    }
+    else {
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+}
+    window.addEventListener('keydown', function (e) {
+            myGameArea.keys = (myGameArea.keys || []);
+            myGameArea.keys[e.keyCode] = true;
+        })
+        window.addEventListener('keyup', function (e) {
+            myGameArea.keys[e.keyCode] = false; 
+        })
+    this.newPos = function() {
+        this.x += this.speedX;
+        this.y += this.speedY; 
+        if (this.type == "background") {
+            if (this.y == (this.height)) {
+                this.y = 0;
+            }
+        }       
+    }    
+    this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            crash = false;
+        }
+        return crash;
+    }
+    this.asteroidcrashWith = function(otherobj) {
+        var myleft = this.x + 10;
+        var myright = this.x - 10 + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            crash = false;
+        }
+        return crash;
+    }
+}
+
+function updateGameArea() {
+    for (i = 0; i < myObstacles.length; i += 1) {
+        if (myGamePiece.crashWith(myObstacles[i])){
+            myGameArea.stop();
+            return;
+        } 
+    }
+    for (i = 0; i < backgrounds.length; i += 1) {
+        if (myGamePiece.crashWith(backgrounds[i])){
+            myGameArea.stop();
+            return;
+        } 
+    }
+    for (i = 0; i < fastObstacles.length; i += 1) {
+        if (myGamePiece.crashWith(fastObstacles[i])){
+            myGameArea.stop();
+            return;
+        } 
+    }
+    for (i = 0; i < missiles.length; i += 1) {
+        if (missiles[i].y < 0) {
+            missiles.splice(i, 1);
+        return;
+    }
+        for (j = 0; j < myObstacles.length; j +=1) {
+                if (missiles[i].crashWith(myObstacles[j])) {
+                missiles.splice(i, 1);
+                myObstacles.splice(j, 1);
+                console.log("crash");
+            }
+        }
+    }
+    for (i = 0; i < missiles.length; i += 1) {
+        for (j = 0; j < backgrounds.length; j +=1) {
+            if (missiles[i].crashWith(backgrounds[j])){
+                missiles.splice(i, 1);
+                console.log(backgrounds[j].counter);
+            }
+        }
+    }
+    for (i = 0; i < missiles.length; i += 1) {
+        for (j = 0; j < fastObstacles.length; j +=1) {
+            if (missiles[i].crashWith(fastObstacles[j])){
+                missiles.splice(i, 1);
+            }
+        }
+    }
+    myGameArea.clear();
+    myBackground.speedY = 1;
+    myBackground.newPos();    
+    myBackground.update();
+    myGameArea.frameNo += 1;
+    if (myGameArea.frameNo <= 1000) {
+    if (myGameArea.frameNo == 1 || everyinterval(50)) {
+        minHeight = 20;
+        maxHeight = 200;
+        myObstacles.push(new component(20, 20, "alien.png", getRandomInt(0, 270), 0, "image"));
+        fastObstacles.push(new component(30, 30, "output11.png", getRandomInt(0, 480), 0, "image"));
+     }  
+    } else if (myGameArea.frameNo <= 2000) {
+        if (myGameArea.frameNo == 1 || everyinterval(25)) {
+        y = 0;
+        minHeight = 20;
+        maxHeight = 200;
+        x = getRandomInt(0, 480);
+        myObstacles.push(new component(20, 20, "alien.png", x, y, "image"));
+     }  
+} else if (myGameArea.frameNo <= 3000) {
+    if (myGameArea.frameNo == 1 || everyinterval(10)) {
+        y = 0;
+        minHeight = 20;
+        maxHeight = 200;
+        x = getRandomInt(0, 480);
+        myObstacles.push(new component(20, 20, "alien.png", x, y, "image"));
+     }  
+    if (myGameArea.frameNo == 1 || everyinterval(50)) {
+        y = 0;
+        minHeight = 20;
+        maxHeight = 200;
+        x = getRandomInt(0, 480);
+        fastObstacles.push(new component(30, 30, "output11.png", x, y, "image"));
+     }
+} else {
+    if (myGameArea.frameNo == 1 || everyinterval(10)) {
+        y = 0;
+        minHeight = 20;
+        maxHeight = 200;
+        x = getRandomInt(0, 480);
+        myObstacles.push(new component(20, 20, "alien.png", x, y, "image"));
+     }  
+    if (myGameArea.frameNo == 1 || everyinterval(25)) {
+        y = 0;
+        minHeight = 20;
+        maxHeight = 200;
+        x = getRandomInt(0, 480);
+        fastObstacles.push(new component(30, 30, "output11.png", x, y, "image"));
+     }
+}  
+    if (myGameArea.frameNo == 1 || everyinterval(360)) {
+        x = getRandomInt(0,540);
+        minHeight = 0;
+        maxHeight = 540;
+        y = -10;
+        c = 0;
+        backgrounds.push(new component(50, 50, "asteroid.png", x, y, "image", c));
+      }  
+    for (i = 0; i < backgrounds.length; i += 1) {
+        backgrounds[i].y += .5;
+        backgrounds[i].update(); 
+    } 
+    for (i = 0; i < myObstacles.length; i += 1) {
+        myObstacles[i].y += 2;
+        myObstacles[i].update();
+    }
+    for (i = 0; i < fastObstacles.length; i += 1) {
+        fastObstacles[i].y += 5;
+        fastObstacles[i].update();
+    }
+    myGamePiece.speedX = 0;
+    myGamePiece.speedY = 0;
+    myScore.text="SCORE: " + Math.floor(myGameArea.frameNo);
+    myScore.update(); 
+    if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -5; }
+    if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 5; }
+    /* if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -5; }
+    if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 5; }
+    /* if (myGameArea.keys && (keyCode == 32))  */
+    document.body.onkeyup = function(e){
+    if(e.keyCode == 32){
+        {
+            console.log(missiles.length);
+            x = myGamePiece.x + 12;
+            y = myGamePiece.y - 20;
+            missiles.push(new component(20, 25, "spaceship.png", x, y, "image"));
+    }
+    }
+}
+for (i = 0; i < missiles.length; i += 1) {
+        missiles[i].y -= 10;
+        missiles[i].update();
+    }
+    myGamePiece.newPos();    
+    myGamePiece.update();
+    ctx.drawImage(ship, myGamePiece.x, myGamePiece.y + 40); 
+    var element = document.getElementById("score");
+     if (myGameArea.frameNo > element.innerHTML){
+        element.innerHTML = myGameArea.frameNo;
+     }  ;
+    
+}
+
+function everyinterval(n) {
+    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+    return false;
+}
+
+function restart() {
+    myObstacles.length = 0;
+    fastObstacles.length = 0;
+    backgrounds.length = 0;
+    backgroundsright.length = 0;
+    myGameArea.frameNo = 0;
+    myGamePiece = new component(30, 30, "output8.png", 240, 500,  "image");
+
+}
+
+
+
+
+</script>
+<div style="text-align:center;width:480px;">
+    <button onclick="myGameArea.stop(); restart(); myGameArea.start(); draw();">Restart</button><br><br>
+    <p> Welcome to Pew-Pew! You are Green Leader. Protect yourself, and dont get hit! </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style type="text/css">
+
+#flameanimation {
+        /* our flame sprite png */
+        background: url(http://www.thecave.info/wp-content/uploads/2014/08/flame_sprite.png);
+        width: 512px;
+        height: 512px;
+}
+
+</style>
+</head>
+<body>
+  <div id="flameanimation" title="Sprite Animation"></div>
+<script type = "text/javascript">
+$(document).ready(function(){
+        // call the next() function every 100 ms.
+        setInterval(next, 100);
+});
+
+// first frame of animation
+var frame = 1;
+
+// move the sprite animation to the next frame
+//      i.e. move background position to the next image in the sequence
+function next()
+{       
+        // Set the position of the sprite image 512px more to the left on each frame.
+        var left = 512 * frame;
+        // top stays 0 since all the images have Y positioned at 0
+        var top = 0;
+        document.getElementById('flameanimation').style.backgroundPosition = '-'+left+'px -'+top+'px'; 
+
+        frame++;}
+
+</script>
+</body>
+
+</html>

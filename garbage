@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<pre class="r"><code>library(shiny)
+
+server &lt;- function(input, output, session) { } #the server
+
+ui &lt;- basicPage(&quot;This is a real Shiny app&quot;) # the user interface
+
+shinyApp(ui = ui, server = server) # this launches your app</code></pre>
+</div>
+</html>

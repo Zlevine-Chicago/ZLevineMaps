@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #99ff99;
+    background-image: "gamebackground.png"
+}
+</style>
+</head>
+<body onload="startGame()">
+<script>
+var myBackground;
+var myGamePiece;
+var blackGamePiece;
+var blackGamePieceTwo;
+var blackGamePieceThree;
+var blackGamePieceFour;
+var blackGamePieceFive;
+var yellowGamePiece;
+var blueGamePiece;
+var orangeGamePiece;
+var orangeGamePieceTwo;
+var myScore;
+
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function startGame() {
+    myScore = new component("30px", "Consolas", "black", 280, 40, "text");
+    myGamePiece = new component(25, 25, "red", 240, 245)
+    blackGamePiece = new component(15, 15, "black", -29, getRandomInt(0,90));
+    blackGamePieceTwo = new component(15, 15, "black", -29, getRandomInt(0,90));
+    blackGamePieceThree = new component(15, 15, "black", -29, getRandomInt(0,90));
+    blackGamePieceFour = new component(15, 15, "black", -29, getRandomInt(0,90));
+    blackGamePieceFive = new component(15, 15, "black", -29, getRandomInt(0,90));
+    yellowGamePiece = new component(15, 15, "yellow", -29, getRandomInt(90,180)); 
+    blueGamePiece = new component(15, 15, "blue", -29, getRandomInt(180,245));
+    orangeGamePiece = new component(15, 15, "orange", getRandomInt(-29, 480), 270);
+    myBackground = new component(656, 270, "gamebackground.png", 10, 120, "image")
+    myGameArea.start();
+
+}
+
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = 480;
+        this.canvas.height = 270;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+        window.addEventListener('keydown', function (e) {
+            myGameArea.keys = (myGameArea.keys || []);
+            myGameArea.keys[e.keyCode] = true;
+        })
+        window.addEventListener('keyup', function (e) {
+            myGameArea.keys[e.keyCode] = false; 
+        })
+    },
+    clear: function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    stop : function() {
+        clearInterval(this.interval);
+    }
+}
+
+
+function component(width, height, color, x, y, type) {
+    this.type = type;
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;
+    this.x = x;
+    this.y = y;
+    this.update = function() {    
+    ctx = myGameArea.context;
+    if (type == "image") {
+        this.image = new Image();
+        this.image.src = color;
+    }
+    else if (this.type == "text") {
+      ctx.font = this.width + " " + this.height;
+      ctx.fillStyle = color;
+      ctx.fillText(this.text, this.x, this.y);
+    } else {
+    ctx.fillStyle = color;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+}
+}
+    this.newPos = function() {
+        this.x += this.speedX;
+        this.y += this.speedY; 
+    } 
+    this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) ||
+               (mytop > otherbottom) ||
+               (myright < otherleft) ||
+               (myleft > otherright)) {
+           crash = false;
+        }
+        return crash;
+    }
+}
+ function updateGameArea() {
+    if (myGamePiece.crashWith(blackGamePiece) || myGamePiece.crashWith(blueGamePiece) || myGamePiece.crashWith(yellowGamePiece) || myGamePiece.crashWith(blackGamePieceTwo) || myGamePiece.crashWith(blackGamePieceThree) || myGamePiece.crashWith(orangeGamePiece)) {
+        myGameArea.stop();
+    } else { 
+    myGameArea.clear();
+    if (blackGamePiece.x < 500) {
+        blackGamePiece.x += 3;
+    } else { 
+        blackGamePiece.x -= 519;
+        blackGamePiece.y = getRandomInt(45,150);
+    }
+    if (yellowGamePiece.x < 500) {
+        yellowGamePiece.x += 4;
+    } else { 
+        yellowGamePiece.x -= 519;
+        yellowGamePiece.y = getRandomInt(90,180);
+    }
+    if (blueGamePiece.x < 500) {
+        blueGamePiece.x += 5;
+    } else { 
+        blueGamePiece.x -= 519;
+        blueGamePiece.y = getRandomInt(180,245);
+    }
+    if (myGamePiece.y < 0) {
+        myGamePiece.y += 270;
+        myGameArea.frameNo += 1;
+    }
+    blackGamePiece.update();
+    yellowGamePiece.update(); 
+    blueGamePiece.update();
+    if (myGameArea.frameNo >= 5) {
+        orangeGamePiece.y -= -1
+        if (orangeGamePiece.y > 280){
+            orangeGamePiece.y = 0
+        }
+        if (orangeGamePiece.y < myGamePiece.y) {
+            if (orangeGamePiece.x < myGamePiece.x) {
+                orangeGamePiece.x += 1;
+            } else { 
+                orangeGamePiece.x -= 1;
+        
+            }
+        }
+    if (blackGamePieceTwo.x < 500) {
+        blackGamePieceTwo.x += 2;
+    } else { 
+        blackGamePieceTwo.x -= 519;
+        blackGamePieceTwo.y = getRandomInt(0,90);
+    }
+    orangeGamePiece.update();
+    blackGamePieceTwo.update();
+} 
+    if (myGameArea.frameNo >= 10) {
+        if (blackGamePieceThree.x < 500) {
+        blackGamePieceThree.x += 1.5;
+    } else { 
+        blackGamePieceThree.x -= 519;
+        blackGamePieceThree.y = getRandomInt(250,150);
+    }
+    blackGamePieceThree.update();
+}
+    myGamePiece.speedX = 0;
+    myGamePiece.speedY = 0;    
+    if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -5; }
+    if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 5; }
+    if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -5; }
+    if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 5; }
+    myScore.text="SCORE: " + myGameArea.frameNo;
+    myScore.update();
+    myGamePiece.newPos();
+    myGamePiece.update();
+}
+ } 
+
+</script>
+
+<p> Try not to get hit getting to the other side!</p>
+
+</body>
+</html>

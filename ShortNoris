@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Short Noris</title>
+  <link rel="icon" href="favicon.png">
+  <link rel="stylesheet" type="text/css" href="Nori.css">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway">
+  
+  
+</head>
+<body>
+  <div class="container">
+    <div>
+      <header id = "header"> A Collection of Short Noris </header>
+
+    
+<div class="maintext1">
+ 	<p> 
+  </p>
+</div>
+</div>
+          <div class="focus">
+      <img id="focus" src="NoriPictures/SweaterNori.JPG">
+      <div class="maintext">
+    <p class = "title">  Ode to a Dog
+      </p>
+      <p>
+      Oh Noru, King of the dogs
+      The height of adorability
+      It must be written down in all the logs
+      How your four legs dash with their agility
+       </p>
+ <p> 
+      Your little sweater is red and white
+      Such regal canine apparel
+      With lengthy doggo tail full of might
+      Lesser dogs are but mere rabble
+       </p>
+ <p> 
+      I hear tan paw patter down the hall
+      Pit pat pit pat pit pat
+      Chasing her subject, orange ball
+      Thank fuck she's not a cat
+       </p>
+ </div> 
+    </div>
+  <div>
+      <div class="gallery">
+        <img src= "NoriPictures/SweaterNori.png")/>
+        <img src= "NoriPictures/SmileyNori.png")/>
+        <img src= "NoriPictures/Nori2.jpeg")/> 
+        <img src= "NoriPictures/Nori3.png")/>    
+</div>
+<div class="maintext">
+    <p> 
+  </p>
+
+
+ </div> 
+
+   
+
+</div>
+
+<script src="webpage.js"></script>
+</body>
+</html> 

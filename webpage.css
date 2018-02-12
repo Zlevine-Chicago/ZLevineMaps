@@ -2,7 +2,6 @@
 head {}
 body {
 	font-size: 50px;
- background-color: white;
 }
 header{
   text-align: center;
@@ -64,7 +63,7 @@ video {
 }
 
 /* div classes */
-.buffer {
+.bodyimage {
   position: relative;
 }
 
@@ -73,16 +72,21 @@ video {
   flex-direction: column;
   color: black;
   /* text-shadow: .61px .61px #888888; */
-  font-family: 'Cormorant SC', serif;
+  font-family: 'Courier', serif;
   font-weight: 100;
 }
 .maintext {
-  background-color: white;
   border-radius: 4px;
-	margin-left: 12.5%;
   margin-right: 12.5%;
   padding-left: 15px;
-  margin-top: 75px; 
+  float: right;
+}
+.maintext1 {
+  border-radius: 4px;
+  margin-left: 12.5%;
+  margin-right: 12.5%;
+  margin-top: 70px;
+  padding-left: 15px;
 }
 
 .sidebar {
@@ -108,37 +112,34 @@ video {
 .tab { text-indent:40px }
 
 .gallery {
-    border: 1px solid #ccc;
-    float: left;
-    width: 180px;
-    margin-top: 12.5%;
-    padding-top: 30px;
+    float: bottom;
+    width: 1000px;
+    height: 180px;
+    margin-left: 12.5%; 
 }
 
 .gallery img:hover {
-    border: 1px solid #777;
+    border: 2px solid black;
 
 }
 
 
 .gallery img {
-    width: 100%;
-    height: auto;
+    border: 2px solid transparent;
+    width: 180px;
+    height: 100%;
 }
 
 .focus img {
   vertical-align: 50%;
-  max-width: 55%;
+  max-width: 25%;
   height: 450px;
-  margin-left: 25%;
-  margin-right: 20%;
-  margin-top: -87.5%;
+  margin-left: 12.5%;
   border-radius: 4px;
   border: 2px solid #e3e3e3;
 }
 /* navbar animations and format */
 .nav {
-  margin-top: 58px;
   font-size: 25px;
   margin-right: 20px;
 }
@@ -173,7 +174,7 @@ video {
     background:#595959;
 }
 .nav li ul {
-    background:#273754;
+    background:#595959;
 }
 .nav li ul li {
     width:200px;
@@ -208,7 +209,8 @@ video {
 #header {
 	font-size: 50px;
   position: fixed;
-  background-color: #1da1ad;
+  background-color: black;
+ /* background-color: #1da1ad; */
   border-radius: 4px;
   box-shadow: 2.5px 2.5px 1.25px #888888;
   margin-left: -180px;

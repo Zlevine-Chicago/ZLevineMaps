@@ -1,0 +1,247 @@
+/* Large Containers */
+head {}
+body {
+	font-size: 50px;
+}
+header{
+  text-align: center;
+  color: white;
+}
+/* h1 - h6 */
+h1 {}
+h2 {}
+h6 {
+  position: fixed;
+  min-width: 50%;
+  max-width: 75%;
+  margin-top: 30px;
+  text-align: center;
+  color: black;
+}
+/* paragraph, link, iframe, and videos */
+
+p {
+	font-size: .5em;
+  padding-right: 15px;
+ /*background-color: white;
+  border-radius: 4px;
+  max-width: 45%;
+  margin-left: 5%;
+  padding-left: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-top: 0px; */
+
+}
+
+a:link {
+    color: white;
+}
+
+/* visited link */
+a:visited {
+    color: white;
+}
+
+iframe {
+  width: 1000px ;
+  height: 650px;
+  margin-left: 7.5%;
+  margin-top: 30px;
+  text-align: center;
+  border-radius: 4px;
+  border: 2px solid #e3e3e3;
+}
+
+img {
+  background-color: #effdff;
+}
+video {
+  background-color: #000000;
+  border: 2px solid black;
+  margin-left: 100px;
+}
+
+/* div classes */
+.bodyimage {
+  position: relative;
+}
+
+.container {
+  display: flex; 
+  flex-direction: column;
+  color: black;
+  /* text-shadow: .61px .61px #888888; */
+  font-family: 'Courier', serif;
+  font-weight: 100;
+}
+.maintext {
+  border-radius: 4px;
+  margin-right: 12.5%;
+  padding-left: 15px;
+  margin-top: -2.5%;
+  max-width: 45%;
+  float: right;
+}
+.maintext1 {
+  border-radius: 4px;
+  margin-left: 12.5%;
+  margin-right: 12.5%;
+  margin-top: 70px;
+  padding-left: 15px;
+}
+.title {
+  font-size: 50px;
+  margin-bottom: -2.5%;
+}
+
+.sidebar {
+  max-width: 25%;
+  min-width: 140px;
+  position: fixed;
+  right: -50px;
+  top: 0px;
+  margin-right: 0px;
+  margin-top: 1px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: -20px;
+  padding-right: 20px;
+  font-size: 15px;
+  color: white;
+  /* color: black;
+  background-image: url("http://www.mirror80.com/wp-content/uploads/2013/03/Marble-tile.jpg");
+  background-size: 75%%;
+  background-repeat: none; */
+}
+
+.tab { text-indent:40px }
+
+.gallery {
+    float: bottom;
+    width: 1000px;
+    height: 180px;
+    margin-left: 12.5%; 
+}
+
+.gallery img:hover {
+    border: 2px solid black;
+
+}
+
+
+.gallery img {
+    border: 2px solid transparent;
+    width: 180px;
+    height: 100%;
+}
+
+.focus img {
+  vertical-align: 50%;
+  max-width: 25%;
+  height: 450px;
+  margin-left: 12.5%;
+  margin-top: 5%;
+  border-radius: 4px;
+  border: 2px solid #e3e3e3;
+}
+/* navbar animations and format */
+.nav {
+  font-size: 25px;
+  margin-right: 20px;
+}
+
+.nav ul {
+    *zoom:1;
+    list-style:none;
+    margin:0;
+    padding:0;
+    background:#333;
+}
+.nav ul:before,.nav ul:after {
+    content:"";
+    display: block;
+}
+.nav ul:after {
+    clear:both;
+}
+.nav ul > li {
+    /* float:left; */
+    position:relative;
+}
+.nav a {
+    display:block;
+    padding:10px 20px;
+    line-height:1.2em;
+    color:#fff;
+    border-left:1px solid #595959;
+}
+.nav a:hover {
+    text-decoration:none;
+    background:#595959;
+}
+.nav li ul {
+    background:#595959;
+}
+.nav li ul li {
+    width:200px;
+}
+.nav li ul a {
+    border:none;
+}
+.nav li ul a:hover {
+    background:rgba(0,0,0,0.2);
+}
+
+.nav li ul {
+    position:absolute;
+    left:-200px;
+    top:15px;
+    z-index:1;
+    visibility:hidden;
+    opacity:0;
+    -webkit-transition:200ms ease;
+    -moz-transition:200ms ease;
+    -o-transition:200ms ease;
+    transition:200ms ease;
+}
+.nav ul > li:hover ul {
+    visibility: visible;
+    opacity:1;
+    filter:alpha(opacity=100);
+}
+
+/* id's */
+
+#header {
+	font-size: 50px;
+  position: fixed;
+  background-color: black;
+ /* background-color: #1da1ad; */
+  border-radius: 4px;
+  box-shadow: 2.5px 2.5px 1.25px #888888;
+  margin-left: -180px;
+  margin-top: -50px;
+  padding-top: 50px;
+  padding-left: 200px;
+  padding-right: 10px;
+  width: 100%;
+}
+#golfarticle {
+  font-size: 34px;
+  color: white;
+}
+#sam {
+	position: fixed;
+   /* right: 10px;
+    bottom: 10px; */
+}
+
+#greenleader {
+  width: 500px;
+  height: 650px;
+  overflow:hidden;
+  margin-top: 0px;
+  background-color: white;
+
+}
